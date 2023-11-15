@@ -21,8 +21,8 @@
 /**
 * struct fmt - Struct op
 *
-* @fmt: The format.
-* @fn: The function associated.
+* @fmt: format.
+* @fn: function associated.
 */
 struct fmt
 {
@@ -33,85 +33,83 @@ int (*fn)(va_list, char[], int, int, int, int);
 /**
 * typedef struct fmt fmt_t - Struct op
 *
-* @fmt: The format.
-* @fm_t: The function associated.
+* @fmt:  format.
+* @fm_t:  function associated.
 */
 typedef struct fmt fmt_t;
 
+
+/* _printf prototype */
+void my_buffer(char buffer[], int *buff_count);
 int _printf(const char *format, ...);
-int handle_print(const char *fmt, int *i,
-va_list list, char buffer[], int flags, int width, int precision, int size);
 
-/****************** FUNCTIONS ******************/
+/* print_function prototype */
+int output_char(va_list arg, char buffer[], int flag, int width, int precision,
+int size);
+int output_string(va_list arg, char buffer[], int flag, int width,
+int precision, int size);
+int output_percent(va_list arg, char buffer[], int flag, int width,
+int precision, int size);
+int output_int(va_list arg, char buffer[], int flag, int width,
+int precision, int size);
+int output_binary(va_list arg, char buffer[], int flag, int width,
+int precision, int size);
 
-/* Funtions to print chars and strings */
-int print_char(va_list types, char buffer[],
-int flags, int width, int precision, int size);
-int print_string(va_list types, char buffer[],
-int flags, int width, int precision, int size);
-int print_percent(va_list types, char buffer[],
-int flags, int width, int precision, int size);
+/* print_function1 prototype */
+int output_unsigned(va_list arg, char buffer[], int flag, int width,
+int precision, int size);
+int output_octal(va_list arg, char buffer[], int flag, int width,
+int precision, int size);
+int output_hexa(va_list arg, char map_to[], char buffer[], int flag,
+char flag_ch, int width, int precision, int size);
+int output_hexadecimal(va_list arg, char buffer[],
+int flag, int width, int precision, int size);
+int output_hexa_upper(va_list arg, char buffer[],
+int flag, int width, int precision, int size);
 
-/* Functions to print numbers */
-int print_int(va_list types, char buffer[],
-int flags, int width, int precision, int size);
-int print_binary(va_list types, char buffer[],
-int flags, int width, int precision, int size);
-int print_unsigned(va_list types, char buffer[],
-int flags, int width, int precision, int size);
-int print_octal(va_list types, char buffer[],
-int flags, int width, int precision, int size);
-int print_hexadecimal(va_list types, char buffer[],
-int flags, int width, int precision, int size);
-int print_hexa_upper(va_list types, char buffer[],
-int flags, int width, int precision, int size);
+/* print_function2 prototype */
+int output_pointer(va_list arg, char buffer[], int flag, int width,
+int precision, int size);
+int output_not_printable(va_list arg, char buffer[], int flag, int width,
+int precision, int size);
+int output_rot13string(va_list arg, char buffer[], int flag, int width,
+int precision, int size);
+int output_reverse(va_list arg, char buffer[], int flag, int width,
+int precision, int size);
 
-int print_hexa(va_list types, char map_to[],
-char buffer[], int flags, char flag_ch, int width, int precision, int size);
-
-/* Function to print non printable characters */
-int print_non_printable(va_list types, char buffer[],
-int flags, int width, int precision, int size);
-
-/* Funcion to print memory address */
-int print_pointer(va_list types, char buffer[],
-int flags, int width, int precision, int size);
-
-/* Funciotns to handle other specifiers */
-int _flags(const char *format, int *i);
-int _width(const char *format, int *i, va_list ap);
+/* get_function prototype */
+int _flag(const char *format, int *i);
 int _precision(const char *format, int *i, va_list ap);
+int _width(const char *format, int *i, va_list ap);
 int _size(const char *format, int *i);
 
-/*Function to print string in reverse*/
-int print_reverse(va_list types, char buffer[],
-int flags, int width, int precision, int size);
 
-/*Function to print a string in rot 13*/
-int print_rot13string(va_list types, char buffer[],
-int flags, int width, int precision, int size);
+/* helper_function prototype */
 
-/* width handler */
-int handle_write_char(char c, char buffer[],
-int flags, int width, int precision, int size);
-int write_number(int is_positive, int ind, char buffer[],
-int flags, int width, int precision, int size);
-int write_num(int ind, char bff[], int flags, int width, int precision,
-int length, char padd, char extra_c);
-int write_pointer(char buffer[], int ind, int length,
-int width, int flags, char padd, char extra_c, int padd_start);
+int _size(const char *format, int *i);
+int check_printable(char c);
+int encode_hexa_char(char ascii_code, char buffer[], int i);
+int is_digit(char c);
+long int convert_num(long int n, int size);
+unsigned long int convert_unsigned_num(unsigned long int n, int size);
+int _strlen(const char *str);
 
-int write_unsgnd(int is_negative, int ind,
-char buffer[],
-int flags, int width, int precision, int size);
+/* process_format_specifier prototype */
 
-/****************** UTILS ******************/
-int is_printable(char);
-int append_hexa_code(char, char[], int);
-int is_digit(char);
+int process_format_specifier(const char *fmt, int *index, va_list arg,
+char buffer[], int flag, int width, int precision, int size);
 
-long int convert_size_number(long int num, int size);
-long int convert_size_unsgnd(unsigned long int num, int size);
+/* _write_function prototype */
+
+int _write_char(char c, char buffer[], int flag, int width,
+int precision, int size);
+int _write_number(int is_neg, int index, char buffer[], int flag, int width,
+int precision, int size);
+int _write_num(int index, char buffer[], int flag, int width, int precision,
+int len, char padding, char extra_ch);
+int _write_unsigned_number(int is_neg, int index, char buffer[], int flag,
+int width, int precision, int size);
+int _write_pointer(char buffer[], int index, int len, int width, int flag,
+char padding, char extra_ch, int padding_start);
 
 #endif /* MAIN_H */
-

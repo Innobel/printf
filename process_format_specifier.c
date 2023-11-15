@@ -12,7 +12,7 @@
 * @size: Size of field.
 * Return: No of characters written to the buffer.
 */
-int process_format_specifier(const char *fmt, int *index, va_list arg, /
+int process_format_specifier(const char *fmt, int *index, va_list arg,
 		char buffer[], int flag, int width, int precision, int size)
 {
 int unknown_length = 0, printed_chars = -1;
@@ -38,7 +38,7 @@ return (-1);
 unknown_length += write(1, "%%", 1);
 if (fmt[*index - 1] == ' ')
 unknown_length += write(1, " ", 1);
-else if (format_width)
+else if (width)
 {
 --(*index);
 while (fmt[*index] != ' ' && fmt[*index] != '%')

@@ -19,7 +19,7 @@ void my_buffer(char buffer[], int *buff_count)
 * _printf - Custom implementation of the printf function.
 * @format: The format string specifying.
 * @...: Variable number of arguments based on the format specifier
-* Return: The total number of characters written, excluding the null terminator,
+* Return: The total number of characters written, excluding the null terminator
 *         or -1 if an error occurs.
 */
 int _printf(const char *format, ...)
@@ -59,6 +59,8 @@ printed_chars += printed;
 }
 }
 
-return printed_chars;
+va_end(ap);
+
+return (printed_chars);
 }
 

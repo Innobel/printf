@@ -29,7 +29,13 @@ UNUSED(precision);
 
 num_address = (unsigned long)address;
 
-for (; num_address > 0; num_address /= 16)
+if (num_address == 0)
+{
+buffer[index--] = '0';
+len++;
+}
+
+for (; num_address != 0; num_address /= 16)
 {
 buffer[index--] = map_to[num_address % 16];
 len++;
@@ -44,8 +50,8 @@ extra_ch = ' ', len++;
 
 index++;
 
-return (write_pointer(buffer, index, len, width, flag, padding, extra_ch, /
-			padding_start));
+return (_write_pointer(buffer, index, len, width, flag,
+			padding, extra_ch, padding_start));
 }
 
 /**
@@ -162,7 +168,7 @@ int output_reverse(va_list arg, char buffer[], int flag, int width,
 	UNUSED(width);
 	UNUSED(size);
 
-	str = va_list(arg, char *);
+	str = va_arg(arg, char *);
 
 	if (str == NULL)
 	{

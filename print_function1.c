@@ -61,7 +61,7 @@ int output_octal(va_list arg, char buffer[], int flag, int width,
 
 	for (; value > 0; value /= 8)
 	{
-		buffe[i--] = (value % 8) + '0';
+		buffer[i--] = (value % 8) + '0';
 	}
 
 	if (flag & FLAG_HASH && num != 0)
@@ -85,8 +85,8 @@ int output_octal(va_list arg, char buffer[], int flag, int width,
 int output_hexadecimal(va_list arg, char buffer[],
 		int flag, int width, int precision, int size)
 {
-	return (output_hexa(arg, "0123456789abcdef", buffer, flag, /
-				'x', width, precision, size));
+	return (output_hexa(arg, "0123456789abcdef", buffer, flag, 'x',
+				width, precision, size));
 }
 
 /**
@@ -115,7 +115,7 @@ int output_hexa(va_list arg, char map_to[], char buffer[], int flag,
 	if (value == 0)
 		buffer[i--] = '0';
 
-	for (; value > 0; value / 16)
+	for (; value > 0; value /= 16)
 	{
 		buffer[i--] = map_to[value % 16];
 	}
@@ -141,9 +141,9 @@ int output_hexa(va_list arg, char map_to[], char buffer[], int flag,
  * @size: Modifies size
  * Return: characters written to buffer.
  */
-int output_hexa_upper(va_list arg, char buffer[], 
+int output_hexa_upper(va_list arg, char buffer[],
 		int flag, int width, int precision, int size)
 {
-	return (output_hexa(arg, "0123456789ABCDEF", buffer, flag, /
+	return (output_hexa(arg, "0123456789ABCDEF", buffer, flag,
 				'X', width, precision, size));
 }

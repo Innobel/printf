@@ -30,20 +30,20 @@ int _write_char(char c, char buffer[], int flag, int width,
 	if (width > 1)
 	{
 		buffer[BUFFER_SIZE - 1] = '\0';
-		I = 0;
+		i = 0;
 
 		while (i < width - 1)
 		{
-			buffer[BUFFER_SIZE - i  2] = pad;
+			buffer[BUFFER_SIZE - i - 2] = padding;
 			i++;
 		}
 
 		if (flag & FLAG_MINUS)
-			return (write(1, &buffer[0], 1) + /
+			return (write(1, &buffer[0], 1) +
 					write(1, &buffer[BUFFER_SIZE - i - 1], width - 1));
 		else
-			return (write(1, &buffer[BUFFER_SIZE - i - 1], /
-					width - 1) + write(1, &buffer[0], 1));
+			return (write(1, &buffer[BUFFER_SIZE - i - 1], width - 1) +
+					write(1, &buffer[0], 1));
 	}
 
 	return (write(1, &buffer[0], 1));
@@ -63,7 +63,7 @@ int _write_char(char c, char buffer[], int flag, int width,
 int _write_number(int is_neg, int index, char buffer[], int flag, int width,
 		int precision, int size)
 {
-	int len = BUFFWE_SIZE - index - 1;
+	int len = BUFFER_SIZE - index - 1;
 	char padding = ' ';
 	int written_chars = 0;
 
@@ -78,10 +78,10 @@ int _write_number(int is_neg, int index, char buffer[], int flag, int width,
 	else if (flag & FLAG_PLUS)
 		written_chars = '+';
 	else if (flag & FLAG_SPACE)
-		written_char = ' ';
+		written_chars = ' ';
 
 	/* Call the _write_num function to handle the actural writing */
-	return (_write_num(index, buffer, flag, width, precision, len, padding, /
+	return (_write_num(index, buffer, flag, width, precision, len, padding,
 				written_chars));
 }
 
@@ -98,12 +98,12 @@ int _write_number(int is_neg, int index, char buffer[], int flag, int width,
  * @extra_ch: Extra character to be printed before the number.
  * Return: The number of characters written.
  */
-int _write_num(int index, char buffer[], int flag, int width, int precision, /
+int _write_num(int index, char buffer[], int flag, int width, int precision,
 		int len, char padding, char extra_ch)
 {
 	int i, padding_start = 1;
 	/* Handle special case: ".0d" where no character is required. */
-	if (precision == 0 && index == BUFFER_SIZE - 2 && buffer[index] == '0' && /
+	if (precision == 0 && index == BUFFER_SIZE - 2 && buffer[index] == '0' &&
 			width == 0)
 		return (0);
 	if (precision == 0 && index == BUFFER_SIZE - 2 && buffer[index] == '0')
@@ -129,13 +129,13 @@ int _write_num(int index, char buffer[], int flag, int width, int precision, /
 		else if (!(flag & FLAG_MINUS) && padding == ' ')
 		{
 			if (extra_ch)
-				buffer[--index] = exxtra_ch;
+				buffer[--index] = extra_ch;
 			return (write(1, &buffer[1], i - 1) + write(1, &buffer[index], len)); }
 		else if (!(flag & FLAG_MINUS) && padding == '0')
 		{
-			if (extra_c)
+			if (extra_ch)
 				buffer[--padding_start] = extra_ch;
-			return (write(1, &buffer[padding_start], i - padding_start) + /
+			return (write(1, &buffer[padding_start], i - padding_start) +
 					write(1, &buffer[index], len - (1 - padding_start)));
 		}
 	}
@@ -154,7 +154,7 @@ int _write_num(int index, char buffer[], int flag, int width, int precision, /
  * @size: Modifies size (not used).
  * Return: character written to the buffer.
  */
-int _write_unsigned_number(int is_neg, int index, char buffer[], int flag, /
+int _write_unsigned_number(int is_neg, int index, char buffer[], int flag,
 		int width, int precision, int size)
 {
 	int len = BUFFER_SIZE - index - 1, i = 0;
@@ -163,7 +163,7 @@ int _write_unsigned_number(int is_neg, int index, char buffer[], int flag, /
 	UNUSED(is_neg);
 	UNUSED(size);
 
-	if (precidion == 0 && index == BUFFER_SIZE - 2 && buffer[index] == '0')
+	if (precision == 0 && index == BUFFER_SIZE - 2 && buffer[index] == '0')
 		return (0);
 
 	if (precision > 0 && precision < len)
@@ -179,7 +179,7 @@ int _write_unsigned_number(int is_neg, int index, char buffer[], int flag, /
 
 	if (width > len)
 	{
-		while (i < width - len; i++)
+		while (i < width - len)
 			buffer[i++] = padding;
 
 		buffer[i] = '\0';
@@ -187,7 +187,7 @@ int _write_unsigned_number(int is_neg, int index, char buffer[], int flag, /
 		if (flag & FLAG_MINUS)
 			return (write(1, &buffer[index], len) + write(1, &buffer[0], i));
 		else
-			return (writ(1, &buffer[0], i) + write(1, &buffer[index], len));
+			return (write(1, &buffer[0], i) + write(1, &buffer[index], len));
 	}
 
 	return (write(1, &buffer[index], len));
@@ -204,7 +204,7 @@ int _write_unsigned_number(int is_neg, int index, char buffer[], int flag, /
  * @padding_start: Starting index for padding.
  * Return: characters written to the buffer.
  */
-int _write_pointer(char buffer[], int index, int len, int width, int flag, /
+int _write_pointer(char buffer[], int index, int len, int width, int flag,
 		char padding, char extra_ch, int padding_start)
 {
 	int i = 3;
@@ -236,13 +236,13 @@ int _write_pointer(char buffer[], int index, int len, int width, int flag, /
 				buffer[--padding_start] = extra_ch;
 			buffer[1] = '0';
 			buffer[2] = 'x';
-			return (write(1, &buffer[padding_start], i - padding_start) + /
-					write(1, &buffer[index], length - (1 - padding_start) - 2));
+			return (write(1, &buffer[padding_start], i - padding_start) +
+					write(1, &buffer[index], len - (1 - padding_start) - 2));
 		}
 	}
 	buffer[--index] = 'x';
 	buffer[--index] = '0';
 	if (extra_ch)
-		buffer[--ind] = extra_ch;
-	return (write(1, &buffer[index], BUFF_SIZE - index - 1));
+		buffer[--index] = extra_ch;
+	return (write(1, &buffer[index], BUFFER_SIZE - index - 1));
 }

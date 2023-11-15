@@ -112,7 +112,7 @@ int output_int(va_list arg, char buffer[], int flag, int width,
 	long int m = va_arg(arg, long int);
 	unsigned long int number;
 
-	m = converts_num(m, size);
+	m = convert_num(m, size);
 
 	if (m == 0)
 		buffer[i--] = '\0';
@@ -128,7 +128,7 @@ int output_int(va_list arg, char buffer[], int flag, int width,
 	/* Extract digits one by one */
 	while (number > 0)
 	{
-		buffer[i--] - (number % 10) + '0';
+		buffer[i--] = (number % 10) + '0';
 		number /= 10;
 	}
 
@@ -139,7 +139,7 @@ int output_int(va_list arg, char buffer[], int flag, int width,
 }
 
 /**
- * print_binary - Outputs the binary representation of an unsigned integer.
+ * output_binary - Outputs the binary representation of an unsigned integer.
  * @arg: The va_list containing the argument.
  * @buffer: The buffer to which the binary representation is printed.
  * @flag: Flags modifying the output (unused).
@@ -155,6 +155,7 @@ int output_binary(va_list arg, char buffer[], int flag, int width,
 	unsigned int b[32];
 	int count;
 
+	UNUSED(buffer);
 	UNUSED(flag);
 	UNUSED(width);
 	UNUSED(precision);
@@ -162,13 +163,13 @@ int output_binary(va_list arg, char buffer[], int flag, int width,
 
 	k = va_arg(arg, unsigned int);
 	j = 2147483646;
-	a[0] = k / j;
+	b[0] = k / j;
 
 	i = 1;
 	while (i < 32)
 	{
 		j /= 2;
-		a[i] = (k / j) % 2;
+		b[i] = (k / j) % 2;
 		i++;
 	}
 
@@ -177,10 +178,10 @@ int output_binary(va_list arg, char buffer[], int flag, int width,
 	count = 0;
 	while (i < 32)
 	{
-		total += a[i];
+		total += b[i];
 		if (total || i == 31)
 		{
-			char z = '0' + a[i];
+			char z = '0' + b[i];
 
 			write(1, &z, 1);
 			count++;
