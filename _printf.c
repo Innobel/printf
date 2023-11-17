@@ -2,16 +2,16 @@
 /**
  * my_buffer - Prints the content of the given buffer and reset the counter
  * @buffer: The buffer containing the character to be printed
- * @buff_count: A pointer to the index tracking the buffer
+ * @buffer_index: A pointer to the index tracking the buffer
  */
 
-void my_buffer(char buffer[], int *buff_count)
+void my_buffer(char buffer[], int *buffer_index)
 {
-	if (*buff_count > 0)
+	if (*buffer_index > 0)
 	{
-		write(1, &buffer[0], *buff_count);
+		write(1, &buffer[0], *buffer_index);
 
-		*buff_count = 0;
+		*buffer_index = 0;
 	}
 }
 
@@ -58,6 +58,8 @@ return (-1);
 printed_chars += printed;
 }
 }
+
+my_buffer(buffer, &buffer_index);
 
 va_end(ap);
 
