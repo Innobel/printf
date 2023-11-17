@@ -154,6 +154,7 @@ int output_binary(va_list arg, char buffer[], int flag, int width,
 	unsigned int k, j, i, total;
 	unsigned int b[32];
 	int count;
+	char z;
 
 	UNUSED(buffer);
 	UNUSED(flag);
@@ -162,8 +163,8 @@ int output_binary(va_list arg, char buffer[], int flag, int width,
 	UNUSED(size);
 
 	k = va_arg(arg, unsigned int);
-	j = 2147483646;
-	b[0] = k / j;
+	j = 2147483648;
+	b[0] = (k / j);
 
 	i = 1;
 	while (i < 32)
@@ -181,7 +182,7 @@ int output_binary(va_list arg, char buffer[], int flag, int width,
 		total += b[i];
 		if (total || i == 31)
 		{
-			char z = '0' + b[i];
+			z = '0' + b[i];
 
 			write(1, &z, 1);
 			count++;
